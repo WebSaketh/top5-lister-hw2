@@ -20,7 +20,7 @@ export default class Workspace extends React.Component {
           </div>
           <div id="edit-items">
             {items.map((item, index) => (
-              <ListItem text={item} index={index}/>
+              <ListItem key={index} text={item} index={index} />
             ))}
           </div>
         </div>
