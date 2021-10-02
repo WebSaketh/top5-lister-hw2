@@ -146,6 +146,10 @@ class App extends React.Component {
     this.showDeleteListModal();
   };
 
+  updateToolBarButtons() {
+    if (this.state.currentList == null) {
+    }
+  }
   removeList() {
     this.setState(
       (prevState) => ({
@@ -180,7 +184,11 @@ class App extends React.Component {
   render() {
     return (
       <div id="app-root">
-        <Banner title="Top 5 Lister" closeCallback={this.closeCurrentList} />
+        <Banner
+          title="Top 5 Lister"
+          closeCallback={this.closeCurrentList}
+          currentList={this.state.currentList}
+        />
         <Sidebar
           heading="Your Lists"
           currentList={this.state.currentList}
