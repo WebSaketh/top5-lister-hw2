@@ -34,6 +34,7 @@ export default class ListItem extends React.Component {
     this.props.renameListItemCallback(this.props.index, this.state.text);
     this.handleToggleEdit();
   };
+
   render() {
     console.log(this.props);
     if (this.state.editActive) {

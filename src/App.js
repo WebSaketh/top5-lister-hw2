@@ -226,14 +226,19 @@ class App extends React.Component {
     ) {
       console.log("nothing to undo");
     } else {
-      this.setState((prevState) => ({
-        ...prevState,
-        currentStateIndex: prevState.currentStateIndex + 1,
-        currentList: {
-          ...prevState.currentList,
-          items: prevState.listOfStates[prevState.currentStateIndex + 1],
-        },
-      }));
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          currentStateIndex: prevState.currentStateIndex + 1,
+          currentList: {
+            ...prevState.currentList,
+            items: prevState.listOfStates[prevState.currentStateIndex + 1],
+          },
+        }),
+        () => {
+          this.db.mutationUpdateList(this.state.currentList);
+        }
+      );
     }
   }
   moveStateBackwards() {
@@ -243,14 +248,19 @@ class App extends React.Component {
     ) {
       console.log("nothing to undo");
     } else {
-      this.setState((prevState) => ({
-        ...prevState,
-        currentStateIndex: prevState.currentStateIndex - 1,
-        currentList: {
-          ...prevState.currentList,
-          items: prevState.listOfStates[prevState.currentStateIndex - 1],
-        },
-      }));
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          currentStateIndex: prevState.currentStateIndex - 1,
+          currentList: {
+            ...prevState.currentList,
+            items: prevState.listOfStates[prevState.currentStateIndex - 1],
+          },
+        }),
+        () => {
+          this.db.mutationUpdateList(this.state.currentList);
+        }
+      );
     }
   }
 
