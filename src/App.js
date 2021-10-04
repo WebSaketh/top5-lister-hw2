@@ -199,16 +199,60 @@ class App extends React.Component {
       console.log(tempList);
       this.state.listOfStates.splice(this.state.currentStateIndex + 1);
       this.state.listOfStates.push(tempList);
-      this.state.currentStateIndex++;
-      this.state.currentList.items = [...tempList];
-      this.db.mutationUpdateList(this.state.currentList);
-
-      console.log(this.state.listOfStates);
       console.log(this.state.currentStateIndex);
+
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          currentStateIndex: prevState.currentStateIndex + 1,
+          currentList: {
+            ...prevState.currentList,
+            items: [...tempList],
+          },
+        }),
+        () => {
+          this.db.mutationUpdateList(this.state.currentList);
+        }
+      );
     } else {
       console.log("no change");
     }
   };
+
+  moveStateForward() {
+    if (
+      this.state.listOfStates.length - this.state.currentStateIndex - 1 === 0 ||
+      this.state.currentStateIndex == null
+    ) {
+      console.log("nothing to undo");
+    } else {
+      this.setState((prevState) => ({
+        ...prevState,
+        currentStateIndex: prevState.currentStateIndex + 1,
+        currentList: {
+          ...prevState.currentList,
+          items: prevState.listOfStates[prevState.currentStateIndex + 1],
+        },
+      }));
+    }
+  }
+  moveStateBackwards() {
+    if (
+      this.state.currentStateIndex === 0 ||
+      this.state.currentStateIndex === null
+    ) {
+      console.log("nothing to undo");
+    } else {
+      this.setState((prevState) => ({
+        ...prevState,
+        currentStateIndex: prevState.currentStateIndex - 1,
+        currentList: {
+          ...prevState.currentList,
+          items: prevState.listOfStates[prevState.currentStateIndex - 1],
+        },
+      }));
+    }
+  }
 
   render() {
     return (
@@ -217,6 +261,10 @@ class App extends React.Component {
           title="Top 5 Lister"
           closeCallback={this.closeCurrentList}
           currentList={this.state.currentList}
+          redoCallback={this.moveStateForward.bind(this)}
+          undoCallback={this.moveStateBackwards.bind(this)}
+          listOfStates={this.state.listOfStates}
+          currentStateIndex={this.state.currentStateIndex}
         />
         <Sidebar
           heading="Your Lists"

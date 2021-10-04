@@ -2,21 +2,34 @@ import React from "react";
 
 export default class EditToolbar extends React.Component {
   render() {
+    console.log(this.props.currentStateIndex);
+    console.log(
+      this.props.listOfStates.length - this.props.currentStateIndex - 1
+    );
     return (
       <div id="edit-toolbar">
         <div
           id="undo-button"
           className={`top5-button ${
-            this.props.currentList === null && "disabled"
+            (this.props.currentStateIndex === null ||
+              this.props.currentStateIndex === 0) &&
+            "disabled"
           }`}
+          onClick={this.props.undoCallback}
         >
           &#x21B6;
         </div>
         <div
           id="redo-button"
           className={`top5-button ${
-            this.props.currentList === null && "disabled"
+            (this.props.listOfStates.length -
+              this.props.currentStateIndex -
+              1 ===
+              0 ||
+              this.props.currentStateIndex == null) &&
+            "disabled"
           }`}
+          onClick={this.props.redoCallback}
         >
           &#x21B7;
         </div>
