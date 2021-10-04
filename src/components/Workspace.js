@@ -3,7 +3,12 @@ import ListItem from "./ListItem";
 
 export default class Workspace extends React.Component {
   render() {
-    const { currentList } = this.props;
+    const {
+      currentList,
+      listOfStates,
+      currentStateIndex,
+      renameListItemCallback,
+    } = this.props;
     let items = [];
     if (currentList) {
       items = currentList.items;
@@ -20,7 +25,15 @@ export default class Workspace extends React.Component {
           </div>
           <div id="edit-items">
             {items.map((item, index) => (
-              <ListItem key={index} text={item} index={index} />
+              <ListItem
+                currentList={currentList}
+                key={index}
+                text={item}
+                index={index}
+                listOfStates={listOfStates}
+                currentStateIndex={currentStateIndex}
+                renameListItemCallback={renameListItemCallback}
+              />
             ))}
           </div>
         </div>

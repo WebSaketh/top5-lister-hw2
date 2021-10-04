@@ -26,6 +26,8 @@ class App extends React.Component {
       currentList: null,
       sessionData: loadedSessionData,
       toDelete: null,
+      listOfStates: [],
+      currentStateIndex: null,
     };
   }
   sortKeyNamePairsByName = (keyNamePairs) => {
@@ -118,9 +120,12 @@ class App extends React.Component {
       (prevState) => ({
         currentList: newCurrentList,
         sessionData: prevState.sessionData,
+        listOfStates: [[...newCurrentList.items]],
+        currentStateIndex: 0,
       }),
       () => {
-        // ANY AFTER EFFECTS?
+        console.log(this.state.listOfStates);
+        console.log(this.state.currentStateIndex);
       }
     );
   };
@@ -131,9 +136,13 @@ class App extends React.Component {
         currentList: null,
         listKeyPairMarkedForDeletion: prevState.listKeyPairMarkedForDeletion,
         sessionData: this.state.sessionData,
+        listOfStates: [],
+        currentStateIndex: null,
       }),
       () => {
         // ANY AFTER EFFECTS?
+        console.log(this.state.listOfStates);
+        console.log(this.state.currentStateIndex);
       }
     );
   };
@@ -181,6 +190,26 @@ class App extends React.Component {
     let modal = document.getElementById("delete-modal");
     modal.classList.remove("is-visible");
   }
+
+  renameListItem = (index, newName) => {
+    if (this.state.currentList.items[index] !== newName) {
+      console.log(this.state.listOfStates);
+      let tempList = [...this.state.currentList.items];
+      tempList[index] = newName;
+      console.log(tempList);
+      this.state.listOfStates.splice(this.state.currentStateIndex + 1);
+      this.state.listOfStates.push(tempList);
+      this.state.currentStateIndex++;
+      this.state.currentList.items = [...tempList];
+      this.db.mutationUpdateList(this.state.currentList);
+
+      console.log(this.state.listOfStates);
+      console.log(this.state.currentStateIndex);
+    } else {
+      console.log("no change");
+    }
+  };
+
   render() {
     return (
       <div id="app-root">
@@ -198,7 +227,12 @@ class App extends React.Component {
           loadListCallback={this.loadList}
           renameListCallback={this.renameList}
         />
-        <Workspace currentList={this.state.currentList} />
+        <Workspace
+          currentList={this.state.currentList}
+          listOfStates={this.state.listOfStates}
+          currentStateIndex={this.state.currentStateIndex}
+          renameListItemCallback={this.renameListItem.bind(this)}
+        />
         <Statusbar currentList={this.state.currentList} />
         <DeleteModal
           listKeyPair={this.state.toDelete}
