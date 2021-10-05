@@ -78,6 +78,7 @@ class App extends React.Component {
         // PUTTING THIS NEW LIST IN PERMANENT STORAGE
         // IS AN AFTER EFFECT
         this.db.mutationCreateList(newList);
+        this.db.mutationUpdateSessionData(this.state.sessionData);
       }
     );
   };
@@ -127,10 +128,7 @@ class App extends React.Component {
         listOfStates: [[...newCurrentList.items]],
         currentStateIndex: 0,
       }),
-      () => {
-        console.log(this.state.listOfStates);
-        console.log(this.state.currentStateIndex);
-      }
+      () => {}
     );
   };
   // THIS FUNCTION BEGINS THE PROCESS OF CLOSING THE CURRENT LIST
@@ -145,8 +143,6 @@ class App extends React.Component {
       }),
       () => {
         // ANY AFTER EFFECTS?
-        console.log(this.state.listOfStates);
-        console.log(this.state.currentStateIndex);
       }
     );
   };
@@ -197,13 +193,10 @@ class App extends React.Component {
 
   renameListItem = (index, newName) => {
     if (this.state.currentList.items[index] !== newName) {
-      console.log(this.state.listOfStates);
       let tempList = [...this.state.currentList.items];
       tempList[index] = newName;
-      console.log(tempList);
       this.state.listOfStates.splice(this.state.currentStateIndex + 1);
       this.state.listOfStates.push(tempList);
-      console.log(this.state.currentStateIndex);
 
       this.setState(
         (prevState) => ({
@@ -224,9 +217,17 @@ class App extends React.Component {
   };
 
   addState(list) {
+    let numTrues = 0;
+    for (let x = 0; x < 5; x++) {
+      if (list[x] !== this.state.currentList.items[x]) {
+        numTrues++;
+      }
+    }
+    if (numTrues === 0) {
+      return;
+    }
     this.state.listOfStates.splice(this.state.currentStateIndex + 1);
     this.state.listOfStates.push(list);
-    console.log(this.state.currentStateIndex);
     this.setState(
       (prevState) => ({
         ...prevState,

@@ -2,10 +2,6 @@ import React from "react";
 
 export default class EditToolbar extends React.Component {
   render() {
-    console.log(this.props.currentStateIndex);
-    console.log(
-      this.props.listOfStates.length - this.props.currentStateIndex - 1
-    );
     return (
       <div id="edit-toolbar">
         <div

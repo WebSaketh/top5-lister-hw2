@@ -1,5 +1,4 @@
 import React from "react";
-import App from "../App";
 
 export default class ListItem extends React.Component {
   constructor(props) {
@@ -34,8 +33,6 @@ export default class ListItem extends React.Component {
     }
   };
   handleBlur = () => {
-    console.log(this.state.text);
-    console.log(this.props.index);
     this.props.renameListItemCallback(this.props.index, this.state.text);
     this.handleToggleEdit();
   };
@@ -49,19 +46,17 @@ export default class ListItem extends React.Component {
     document
       .getElementById(ev.target.attributes.id.nodeValue)
       ?.classList.remove("middrag");
-    console.log(document.getElementsByClassName("top5-item"));
     let newState = [];
     Array.from(document.getElementsByClassName("top5-item")).map(
       (item, index) => (newState[index] = item.innerHTML)
     );
-    console.log(newState);
     this.props.addState(newState);
   };
 
   onDragEnter = (ev) => {
     let first = ev.target.attributes.id.nodeValue;
     let second = document.querySelector(".middrag").id;
-    if (first == second) {
+    if (first === second) {
     } else {
       document
         .getElementById(ev.target.attributes.id.nodeValue)
@@ -70,7 +65,6 @@ export default class ListItem extends React.Component {
   };
 
   onDragLeave = (ev) => {
-    console.log(ev.target.attributes.id.nodeValue);
     document
       .getElementById(ev.target.attributes.id.nodeValue)
       ?.classList.remove("target");

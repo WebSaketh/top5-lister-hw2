@@ -2,17 +2,12 @@ import React from "react";
 import ListItem from "./ListItem";
 
 export default class Workspace extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   onDragOver = (ev) => {
     let editItems = document.getElementById("edit-items");
     ev.preventDefault();
     let sam = document.querySelector(".middrag");
     let u = document.querySelector(".target");
-    if (u != null && sam.compareDocumentPosition(u) == 2) {
-      console.log("here");
+    if (u != null && sam.compareDocumentPosition(u) === 2) {
       editItems.insertBefore(sam, u);
     } else if (u != null) {
       editItems.insertBefore(sam, u.nextSibling);

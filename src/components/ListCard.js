@@ -1,5 +1,4 @@
 import React from "react";
-import App from "../App";
 
 export default class ListCard extends React.Component {
   constructor(props) {
@@ -18,7 +17,6 @@ export default class ListCard extends React.Component {
     }
   };
   handleLoadList = (event) => {
-    console.log("start loading list2");
     let listKey = event.target.id;
     if (listKey.startsWith("list-card-text-")) {
       listKey = listKey.substring("list-card-text-".length);
