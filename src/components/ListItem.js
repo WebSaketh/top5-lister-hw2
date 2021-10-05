@@ -35,8 +35,43 @@ export default class ListItem extends React.Component {
     this.handleToggleEdit();
   };
 
+  onDragStart = (ev) => {
+    document
+      .getElementById(ev.target.attributes.id.nodeValue)
+      ?.classList.add("middrag");
+  };
+  onDragEnd = (ev) => {
+    document
+      .getElementById(ev.target.attributes.id.nodeValue)
+      ?.classList.remove("middrag");
+    console.log(document.getElementsByClassName("top5-item"));
+    let newState = [];
+    Array.from(document.getElementsByClassName("top5-item")).map(
+      (item, index) => (newState[index] = item.innerHTML)
+    );
+    console.log(newState);
+    this.props.addState(newState);
+  };
+
+  onDragEnter = (ev) => {
+    let first = ev.target.attributes.id.nodeValue;
+    let second = document.querySelector(".middrag").id;
+    if (first == second) {
+    } else {
+      document
+        .getElementById(ev.target.attributes.id.nodeValue)
+        ?.classList.add("target");
+    }
+  };
+
+  onDragLeave = (ev) => {
+    console.log(ev.target.attributes.id.nodeValue);
+    document
+      .getElementById(ev.target.attributes.id.nodeValue)
+      ?.classList.remove("target");
+  };
+
   render() {
-    console.log(this.props);
     if (this.state.editActive) {
       return (
         <input
@@ -56,6 +91,10 @@ export default class ListItem extends React.Component {
           className="top5-item"
           draggable="true"
           onClick={this.handleClick}
+          onDragEnter={this.onDragEnter}
+          onDragLeave={this.onDragLeave}
+          onDragStart={this.onDragStart}
+          onDragEnd={this.onDragEnd}
         >
           {this.props.currentList.items[this.props.index]}
         </div>

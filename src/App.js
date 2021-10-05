@@ -219,12 +219,39 @@ class App extends React.Component {
     }
   };
 
+  addState(list) {
+    this.state.listOfStates.splice(this.state.currentStateIndex + 1);
+    this.state.listOfStates.push(list);
+    console.log(this.state.currentStateIndex);
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        currentStateIndex: prevState.currentStateIndex + 1,
+        currentList: {
+          ...prevState.currentList,
+          items: [...list],
+        },
+      }),
+      () => {
+        this.db.mutationUpdateList(this.state.currentList);
+        this.fixDom();
+      }
+    );
+  }
+
+  fixDom() {
+    let editItems = document.getElementById("edit-items");
+    for (let x = 1; x < 6; x++) {
+      editItems.append(document.getElementById("item-" + x));
+    }
+  }
+
   moveStateForward() {
     if (
       this.state.listOfStates.length - this.state.currentStateIndex - 1 === 0 ||
       this.state.currentStateIndex == null
     ) {
-      console.log("nothing to undo");
+      console.log("nothing to redo");
     } else {
       this.setState(
         (prevState) => ({
@@ -290,6 +317,7 @@ class App extends React.Component {
           listOfStates={this.state.listOfStates}
           currentStateIndex={this.state.currentStateIndex}
           renameListItemCallback={this.renameListItem.bind(this)}
+          addState={this.addState.bind(this)}
         />
         <Statusbar currentList={this.state.currentList} />
         <DeleteModal
