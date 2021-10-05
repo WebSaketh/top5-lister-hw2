@@ -16,9 +16,14 @@ export default class ListItem extends React.Component {
     }
   };
   handleToggleEdit = (event) => {
-    this.setState({
-      editActive: !this.state.editActive,
-    });
+    this.setState(
+      {
+        editActive: !this.state.editActive,
+      },
+      () => {
+        document.getElementById("item-" + (this.props.index + 1))?.focus();
+      }
+    );
   };
   handleUpdate = (event) => {
     this.setState({ text: event.target.value });
@@ -82,6 +87,7 @@ export default class ListItem extends React.Component {
           onClick={this.handleClick}
           onChange={this.handleUpdate}
           defaultValue={this.props.currentList.items[this.props.index]}
+          onBlur={this.handleBlur}
         ></input>
       );
     } else {

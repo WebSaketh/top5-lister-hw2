@@ -31,9 +31,14 @@ export default class ListCard extends React.Component {
     this.props.deleteListCallback(this.props.keyNamePair);
   };
   handleToggleEdit = (event) => {
-    this.setState({
-      editActive: !this.state.editActive,
-    });
+    this.setState(
+      {
+        editActive: !this.state.editActive,
+      },
+      () => {
+        document.getElementById("list-" + this.props.keyNamePair.name)?.focus();
+      }
+    );
   };
   handleUpdate = (event) => {
     this.setState({ text: event.target.value });

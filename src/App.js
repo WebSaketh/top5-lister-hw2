@@ -38,6 +38,10 @@ class App extends React.Component {
   };
   // THIS FUNCTION BEGINS THE PROCESS OF CREATING A NEW LIST
   createNewList = () => {
+    if (this.state.currentList !== null) {
+      console.log("list currently open");
+      return;
+    }
     // FIRST FIGURE OUT WHAT THE NEW LIST'S KEY AND NAME WILL BE
     let newKey = this.state.sessionData.nextKey;
     let newName = "Untitled" + newKey;
