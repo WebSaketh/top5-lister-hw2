@@ -296,9 +296,18 @@ class App extends React.Component {
     }
   }
 
+  handleKeyDown = (event) => {
+    if (event.ctrlKey && event.keyCode === 90) {
+      this.moveStateBackwards();
+    }
+    if (event.ctrlKey && event.keyCode === 89) {
+      this.moveStateForward();
+    }
+  };
+
   render() {
     return (
-      <div id="app-root">
+      <div id="app-root" tabIndex="0" onKeyDown={this.handleKeyDown}>
         <Banner
           title="Top 5 Lister"
           closeCallback={this.closeCurrentList}
